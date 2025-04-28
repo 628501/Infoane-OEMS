@@ -1,7 +1,7 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import type { BaseQueryFn } from '@reduxjs/toolkit/query';
 
-interface Field {
+export interface Field {
   fieldId: string;
   type?: string;
   label: string;
