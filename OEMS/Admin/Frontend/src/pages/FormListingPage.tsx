@@ -93,7 +93,7 @@ const FormListingPage = () => {
     { field: "label", headerName: "Form Name", width: 250 },
     { field: "description", headerName: "Description", width: 250 },
     { field: "submissions", headerName: "Submissions", width: 200 },
-    { field: "duration", headerName: "Duration", width: 200 },
+    { field: "duration", headerName: "Duration (In mins)", width: 200 },
     { field: "manager", headerName: "Manager", width: 250 },
     {
       field: "status",

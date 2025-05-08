@@ -96,7 +96,7 @@ export const getCandidateSubmission = (req, res) => {
 
 export const submitForm = (req, res) => {
   const { formId } = req.params;
-  const { responseId, ip, userEmail, startTime, termsAccepted } = req.body;
+  const { responseId, userEmail, startTime, termsAccepted } = req.body;
 
   if (!formId || !responseId) {
     return res
@@ -105,13 +105,13 @@ export const submitForm = (req, res) => {
   }
 
   const query = `
-        INSERT INTO ValueTable (responseId, formId, ip, userEmail, startTime, termsAccepted)
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO ValueTable (responseId, formId , userEmail, startTime, termsAccepted)
+        VALUES (?, ?, ?, ?, ?)
       `;
 
   connection.query(
     query,
-    [responseId, formId, ip, userEmail, startTime, termsAccepted],
+    [responseId, formId, userEmail, startTime, termsAccepted],
     (err, results) => {
       if (err) {
         console.error("Error submitting form response:", err);
@@ -133,7 +133,6 @@ export const editSubmission = (req, res) => {
     score,
     status,
     warnings,
-    endIp,
   } = req.body;
 
   if (!formId) {
@@ -143,7 +142,7 @@ export const editSubmission = (req, res) => {
   const query = `
     UPDATE ValueTable
     SET value = ?, endTime = ?, duration = ?, score = ?, status = ?,
-    warnings = ?, endIp = ? WHERE formId = ? AND userEmail = ?
+    warnings = ? WHERE formId = ? AND userEmail = ?
   `;
 
   connection.query(
@@ -155,7 +154,6 @@ export const editSubmission = (req, res) => {
       score,
       status,
       warnings,
-      endIp,
       formId,
       userEmail,
     ],

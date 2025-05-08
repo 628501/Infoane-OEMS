@@ -19,6 +19,7 @@ import {
   useGetCandidateSubmissionQuery,
   useGetFieldsByCandidateFormIdQuery,
   useGetFormByIdQuery,
+  useUpdateTimerMutation,
 } from "../modules/candidate_slice";
 import { useParams } from "react-router-dom";
 import { useLogoutCandidateMutation } from "../modules/candidate_slice";
@@ -39,10 +40,20 @@ const AssessmentPage = () => {
   const initialData = savedAnswers ? JSON.parse(savedAnswers) : {};
   const [startSubmit, { data: submissionResponse }] =
     useAddSubmissionMutation();
+  const [elapsedTime, setElapsedTime] = useState("00:00");
+  const [updateTimer] = useUpdateTimerMutation();
 
   if (submissionResponse?.responseId) {
     localStorage.setItem("responseId", submissionResponse.responseId);
   }
+  const formatDuration = (ms: number) => {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, "0")}:${seconds
+      .toString()
+      .padStart(2, "0")}`;
+  };
 
   const handleAgree = useCallback(async () => {
     if (termsAccepted) {
@@ -59,7 +70,6 @@ const AssessmentPage = () => {
           formId: formId ?? "",
           data: {
             termsAccepted: "true",
-            ip: "",
             userEmail: email ?? "",
             startTime: formattedTime,
             responseId: uuid(),
@@ -82,6 +92,44 @@ const AssessmentPage = () => {
       skip: !submissionId,
     }
   );
+
+  useEffect(() => {
+    if (!candidateData?.startTime || !formData?.duration) return;
+
+    const [startHour = 0, startMinute = 0, startSecond = 0] =
+      candidateData.startTime.split(":").map(Number);
+    const [durationMinutes = 0, durationSeconds = 0] = formData.duration
+      .split(":")
+      .map(Number);
+
+    const startDate = new Date();
+    startDate.setHours(startHour, startMinute, startSecond, 0);
+    const endDate = new Date(
+      startDate.getTime() + (durationMinutes * 60 + durationSeconds) * 1000
+    );
+
+    const interval = setInterval(() => {
+      const now = new Date();
+      let diffMs = endDate.getTime() - now.getTime();
+
+      if (diffMs <= 0) {
+        setElapsedTime("00:00");
+        clearInterval(interval);
+        handleSubmit(onSubmit)();
+        return;
+      }
+
+      setElapsedTime(formatDuration(diffMs));
+
+      updateTimer({
+        formId: candidateData.formId,
+        userEmail: candidateData.userEmail,
+        Timer: formatDuration(diffMs),
+      });
+    });
+
+    return () => clearInterval(interval);
+  }, [candidateData, formData]);
 
   const { register, handleSubmit, control, watch } = useForm({
     defaultValues: initialData,
@@ -143,7 +191,7 @@ const AssessmentPage = () => {
       minute: "2-digit",
       second: "2-digit",
     });
-    
+
     const [startHour, startMinute, startSecond] = (
       candidateData?.startTime || "00:00:00"
     )
@@ -254,6 +302,9 @@ const AssessmentPage = () => {
           >
             <Typography variant="h4" gutterBottom fontWeight="bold">
               Assessment
+            </Typography>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+              Time Elapsed: {elapsedTime}
             </Typography>
 
             <Divider sx={{ my: 2 }} />

@@ -12,11 +12,11 @@ const SubmissionsPage = () => {
 
   const columns: GridColDef[] = [
     { field: "userEmail", headerName: "Email", width: 300 },
-    { field: "startTime", headerName: "Start Time", width: 100 },
-    { field: "endTime", headerName: "End Time", width: 100 },
-    { field: "duration", headerName: "Duration", width: 100 },
+    { field: "startTime", headerName: "Start Time", width: 200 },
+    { field: "endTime", headerName: "End Time", width: 200 },
+    { field: "duration", headerName: "Duration", width: 200 },
     { field: "status", headerName: "Status", width: 200 },
-    { field: "warning", headerName: "Warning", width: 100 },
+    { field: "warning", headerName: "Warnings", width: 100 },
     { field: "score", headerName: "Score", width: 100, editable: true },
     {
       field: "actions",
@@ -64,12 +64,37 @@ const SubmissionsPage = () => {
         }}
       >
         <Typography sx={{ fontWeight: "bold" }}>Submissions</Typography>
-        <Button variant="contained" disableElevation>
+        <Button
+          variant="text"
+          disableElevation
+          disableFocusRipple
+          disableRipple
+          disableTouchRipple
+          sx={{ color: "white", background: "white", cursor: "default" }}
+        >
           Download
         </Button>
       </Box>
       <Box sx={{ marginTop: "30px", height: "630px" }}>
-        <DataGridPro columns={columns} rows={rows} />
+        <DataGridPro
+          columns={columns}
+          rows={rows}
+          sx={{
+            borderRadius: 3,
+            border: "1px solid lightgray",
+            height: 631,
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#f5f5f5",
+            },
+            "& .MuiDataGrid-columnHeaderTitle": {
+              fontWeight: "bold",
+              fontSize: 14,
+            },
+            "& .MuiDataGrid-row:hover": {
+              backgroundColor: "#f0f7ff",
+            },
+          }}
+        />
       </Box>
     </Box>
   );

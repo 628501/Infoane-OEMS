@@ -9,14 +9,12 @@ interface Submission {
   responseId: string;
   formId?: string;
   value?: any;
-  ip?: string;
   userEmail?: string;
   startTime?: string;
   endTime?: string;
   duration?: string;
   score?: string;
   status?: string;
-  endIp?: string;
   warnings?: number;
   termsAccepted?: string;
 }
@@ -24,7 +22,6 @@ export interface EditSubmissionInput {
   formId: string;
   responseId?: string;
   value: any;
-  ip?: string;
   userEmail: string;
   startTime?: string;
   endTime?: string;
@@ -38,8 +35,6 @@ export interface CandidateSubmission {
   responseId: string;
   formId: string;
   value: any;
-  ip: string;
-  submittedAt: string;
   userEmail: string;
   startTime: string;
   endTime: string;
@@ -47,7 +42,6 @@ export interface CandidateSubmission {
   score: string;
   status: string;
   termsAccepted: string;
-  endIp: string;
   warnings: number;
 }
 export interface EditSubmissionResponse {
@@ -111,7 +105,7 @@ export const candidateSlice = createApi({
 
     addSubmission: builder.mutation<
       AddSubmissionResponse,
-      { formId: string; data: Omit<Submission, "submittedAt"> }
+      { formId: string; data: Submission }
     >({
       query: ({ formId, data }) => ({
         url: `form/${formId}/submit`,

@@ -13,14 +13,12 @@ interface Submission {
   responseId: string;
   formId?: string;
   value?: any;
-  ip?: string;
   userEmail?: string;
   startTime?: string;
   endTime?: string;
   duration?: string;
   score?: string;
   status?: string;
-  endIp?: string;
   warnings?: number;
   termsAccepted?: string;
 }
