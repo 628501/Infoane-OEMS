@@ -86,74 +86,80 @@ const ActiveSessionsPage = () => {
         <Divider />
         <CardContent sx={{ height: 650, overflowY: "auto" }}>
           <List>
-            {sortedSessions.map((session, index) => (
-              <ListItem key={index} sx={{ alignItems: "flex-start" }}>
-                <ListItemIcon
-                  sx={{
-                    mt: { xs: "6px", sm: "12px" },
-                  }}
-                >
-                  {(session.os === "Android" || session.os === "iOS") &&
-                  session.deviceType === "mobile" ? (
-                    <PhoneAndroidOutlinedIcon
-                      color={session.isCurrentSession ? "success" : "action"}
-                    />
-                  ) : (
-                    <DesktopWindowsOutlinedIcon
-                      color={session.isCurrentSession ? "success" : "action"}
-                    />
-                  )}
-                </ListItemIcon>
- 
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: { xs: "column", sm: "row" },
-                    justifyContent: "space-between",
-                    width: "100%",
-                    gap: 1,
-                  }}
-                >
-                  <ListItemText
-                    primary={`${session.deviceType} (${session.os})`}
-                    secondary={`Browser: ${session.browser} | LoggedIn: ${new Date(
-                      session.expiresAt
-                    ).toLocaleString()}`}
-                    sx={{ wordBreak: "break-word" }}
-                  />
-                  <Box
-                    sx={{
-                      minWidth: { xs: "100%", sm: "auto" },
-                      textAlign: { xs: "left", sm: "right" },
-                    }}
-                  >
-                    {session.isCurrentSession ? (
-                      <Typography
-                        variant="caption"
-                        color="success.main"
-                        sx={{ fontWeight: "bold" }}
-                      >
-                        Current Session
-                      </Typography>
-                    ) : (
-                      <Button
-                        color="error"
-                        size="small"
-                        variant="text"
-                        onClick={() => handleLogoutSession(session.id)}
-                        disableElevation
-                        disableFocusRipple
-                        disableTouchRipple
-                        sx={{ fontWeight: "bold" }}
-                      >
-                        Terminate
-                      </Button>
-                    )}
-                  </Box>
-                </Box>
-              </ListItem>
-            ))}
-          </List>
+  {sortedSessions.map((session, index) => (
+    <Box key={session.id}>
+      <ListItem sx={{ alignItems: "flex-start" }}>
+        <ListItemIcon
+          sx={{
+            mt: { xs: "6px", sm: "12px" },
+          }}
+        >
+          {(session.os === "Android" || session.os === "iOS") &&
+          session.deviceType === "mobile" ? (
+            <PhoneAndroidOutlinedIcon
+              color={session.isCurrentSession ? "success" : "action"}
+            />
+          ) : (
+            <DesktopWindowsOutlinedIcon
+              color={session.isCurrentSession ? "success" : "action"}
+            />
+          )}
+        </ListItemIcon>
+
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
+            justifyContent: "space-between",
+            width: "100%",
+            gap: 1,
+          }}
+        >
+          <ListItemText
+            primary={`${session.deviceType} (${session.os})`}
+            secondary={`Browser: ${session.browser} | LoggedIn: ${new Date(
+              session.expiresAt
+            ).toLocaleString()}`}
+            sx={{ wordBreak: "break-word" }}
+          />
+          <Box
+            sx={{
+              minWidth: { xs: "100%", sm: "auto" },
+              textAlign: { xs: "left", sm: "right" },
+            }}
+          >
+            {session.isCurrentSession ? (
+              <Typography
+                variant="caption"
+                color="success.main"
+                sx={{ fontWeight: "bold" }}
+              >
+                Current Session
+              </Typography>
+            ) : (
+              <Button
+                color="error"
+                size="small"
+                variant="text"
+                onClick={() => handleLogoutSession(session.id)}
+                disableElevation
+                disableFocusRipple
+                disableTouchRipple
+                sx={{ fontWeight: "bold"
+            ,mt: { xs: "6px", sm: "12px" },
+          }}
+              >
+                Terminate
+              </Button>
+            )}
+          </Box>
+        </Box>
+      </ListItem>
+      {index !== sortedSessions.length - 1 && <Divider sx={{ my: 1 }} />}
+    </Box>
+  ))}
+</List>
+
         </CardContent>
       </Card>
     </Box>

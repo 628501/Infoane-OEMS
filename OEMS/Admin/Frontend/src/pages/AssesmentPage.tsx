@@ -216,17 +216,14 @@ const AssessmentPage = () => {
         handleSubmitAssessment();
         return;
       }
-
       const formattedTime = formatDuration(remainingMs);
       setElapsedTime(formattedTime);
-      localStorage.setItem("assessmentTimer", formattedTime);
     }, 1000);
 
     const initialElapsedMs = Date.now() - startTime.getTime();
     const initialRemainingMs = Math.max(durationMs - initialElapsedMs, 0);
     const initialFormatted = formatDuration(initialRemainingMs);
     setElapsedTime(initialFormatted);
-    localStorage.setItem("assessmentTimer", initialFormatted);
 
     return () => clearInterval(interval);
   }, [formData?.duration, startTimeData?.startTime, candidateData, expired]);

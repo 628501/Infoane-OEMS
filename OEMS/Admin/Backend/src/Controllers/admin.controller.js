@@ -615,7 +615,7 @@ export const forgotPassword = async (req, res) => {
       from: process.env.SENDER_MAIL,
       to: email,
       subject: "Reset your password",
-      text: `Click the link to reset your password: http://localhost:5173/reset-password/${user.id}/${resetToken}/${expirationTime}`,
+      text: `Click the link to reset your password: ${process.env.PRODUCTION ? 'https://devopsinfoane.site/' : 'http://localhost:5173/'}reset-password/${user.id}/${resetToken}/${expirationTime}`,
     };
 
     await transporter.sendMail(mailOptions);

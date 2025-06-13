@@ -351,7 +351,7 @@ const CandidateRegistrationForm = () => {
               {...register("description", { required: true })}
               fullWidth
               multiline
-              rows={3}
+              rows={10}
             />
             <TextField
               label="Branch"
@@ -363,7 +363,7 @@ const CandidateRegistrationForm = () => {
           <DialogActions sx={{ padding: "30px" }}>
             <Button onClick={() => setOpen(false)}>Cancel</Button>
             <Button type="submit" variant="contained" disableElevation>
-              {editId ? "Edit Form" : "Create Form"}
+              {editId ? "Save" : "Create"}
             </Button>
           </DialogActions>
         </form>

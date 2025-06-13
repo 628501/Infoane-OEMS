@@ -59,6 +59,8 @@ const CandidateRegistrationPage = () => {
 
   const departmentOptions: Record<string, string[]> = {
     "B.E": ["IT", "CSE", "ECE"],
+    "B.Sc": ["IT", "CSE"],
+    "M.Sc": ["IT", "CSE"],
     "B.Tech": ["IT", "CSE", "ECE"],
     Other: ["MCA"],
   };
@@ -123,7 +125,7 @@ const CandidateRegistrationPage = () => {
     <Box
       sx={{
         width: { xs: "90%", sm: "400px", md: "450px" },
-        padding: "40px",
+        padding: "30px",
         mt: "50px",
         border: "1px solid #ddd",
         borderRadius: "12px",
@@ -140,15 +142,31 @@ const CandidateRegistrationPage = () => {
         <Box
           component="form"
           onSubmit={handleSubmit(onSubmit)}
-          sx={{ display: "flex", flexDirection: "column", gap: "25px" }}
+          sx={{ display: "flex", flexDirection: "column", gap: "20px" }}
         >
-          <Typography
-            variant="h5"
-            sx={{ fontWeight: "bold", color: "#333", textAlign: "center" }}
-          >
-            Candidate Registration
+          <Typography variant="h4" sx={{ fontWeight: "bold", color: "#333" }}>
+            {formData.label}
           </Typography>
-          <Typography variant="body2">{formData.description}</Typography>
+          {/* <Typography variant="body2">{formData.description}</Typography> */}
+          <Box
+            component="ol"
+            sx={{
+              m: 0,
+              listStyle: "none",
+              background: "#b7def4",
+              borderRadius: "20px",
+              padding: "10px",
+            }}
+          >
+            {formData.description
+              .split("\n")
+              .filter((line) => line.trim() !== "")
+              .map((line, index) => (
+                <li key={index}>
+                  <Typography variant="body2">{line}</Typography>
+                </li>
+              ))}
+          </Box>
 
           <TextField
             label="Name"
@@ -199,11 +217,17 @@ const CandidateRegistrationPage = () => {
             >
               <MenuItem value="B.E">B.E</MenuItem>
               <MenuItem value="B.Tech">B.Tech</MenuItem>
+              <MenuItem value="B.Sc">B.Sc</MenuItem> {/* Add this */}
+              <MenuItem value="M.Sc">M.Sc</MenuItem> {/* Add this */}
               <MenuItem value="Other">Other</MenuItem>
             </Select>
           </FormControl>
 
-          <FormControl fullWidth error={!!errors.department}>
+          <FormControl
+            fullWidth
+            error={!!errors.department}
+            disabled={!selectedDegree}
+          >
             <InputLabel>Department</InputLabel>
             <Select
               label="Department"
@@ -212,13 +236,23 @@ const CandidateRegistrationPage = () => {
                 required: "Department is required",
               })}
             >
-              {selectedDegree &&
+              {!selectedDegree ? (
+                <MenuItem value="" disabled>
+                  Select degree first
+                </MenuItem>
+              ) : (
                 departmentOptions[selectedDegree]?.map((dept) => (
                   <MenuItem key={dept} value={dept}>
                     {dept}
                   </MenuItem>
-                ))}
+                ))
+              )}
             </Select>
+            {errors.department && (
+              <Typography color="error" fontSize="0.875rem">
+                {errors.department.message}
+              </Typography>
+            )}
           </FormControl>
 
           <TextField

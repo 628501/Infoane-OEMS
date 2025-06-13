@@ -114,7 +114,6 @@ await deleteEligibleExaminees({
       const emails = selectedRows.flatMap(row => row.email ? [row.email] : []);
 
       try {
-
           await deleteEligibleExaminees({
             formId: formId ?? "",
             email: emails ?? "",
@@ -131,7 +130,7 @@ await deleteEligibleExaminees({
       <Box
         sx={{
           display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
+          flexDirection: {sm: "row" },
           justifyContent: "space-between",
           background: "white",
           border: "1px solid lightGray",

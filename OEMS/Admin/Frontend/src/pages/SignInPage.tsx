@@ -48,7 +48,7 @@ const SignInPage = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    setLoading(true);  // start loading
+    setLoading(true);
     const { email, password } = data;
     try {
       const result = await loginUser(email, password);
@@ -64,7 +64,7 @@ const SignInPage = () => {
         "Invalid email or password";
       setExistError(message);
     } finally {
-      setLoading(false);  // stop loading regardless of success or error
+      setLoading(false);
     }
   };
 
